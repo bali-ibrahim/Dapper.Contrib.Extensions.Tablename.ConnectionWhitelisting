@@ -2,11 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>İbrahim Bali</Authors>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Description>Whitelist tablenames using information schema</Description>
+    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Connection.Identifier.Quoting" Version="1.0.1" />
     <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
