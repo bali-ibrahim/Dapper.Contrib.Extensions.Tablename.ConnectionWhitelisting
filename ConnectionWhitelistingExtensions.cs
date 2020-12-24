@@ -8,22 +8,29 @@ namespace Dapper.Contrib.Extensions.Tablename.ConnectionWhitelisting
 {
     public static class ConnectionWhitelistingExtensions
     {
-        //private static readonly IDbConnection connection;
         public static async Task WhitelistDatabaseTablesAsync(this IDbConnection connection)
         {
             const string sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES";
             var tableNamesIEnumerable = await connection.QueryAsync<string>(sql);
-            var tableNames = tableNamesIEnumerable.AsList().ToArray();
-            for (int i = 0; i < tableNames.Length; i++)
-            {
-                tableNames[i] = tableNames[i].QuoteIdentifier(connection);
-            }
+            var tableNames = tableNamesIEnumerable.AsList().ToArray()
+                .Quote(connection)
+                ;
             var whitelist = new HashSet<string>(tableNames);
 
+            var preExistingDelegate = SqlMapperExtensions.TableNameMapper;
 
             SqlMapperExtensions.TableNameMapper = (Type t) =>
             {
-                var tableName = SqlMapperExtensions.TableNameMapper(t).QuoteIdentifier(connection);
+                string tableName;
+                if (preExistingDelegate == null)
+                {
+                    tableName = TablenameExtensions.UnquotedTablename(t);
+                }
+                else
+                {
+                    tableName = preExistingDelegate(t);
+                }
+                tableName = tableName.QuoteIdentifier(connection);
                 if (whitelist != null)
                 {
                     return whitelist.Contains(tableName) ? tableName : throw new Exception($"The tablename {tableName} is not whitelisted!");
@@ -33,6 +40,16 @@ namespace Dapper.Contrib.Extensions.Tablename.ConnectionWhitelisting
                     return tableName;
                 }
             };
+        }
+
+        private static string[] Quote(this string[] identifiers, IDbConnection connection)
+        {
+            for (int i = 0; i < identifiers.Length; i++)
+            {
+                identifiers[i] = identifiers[i].QuoteIdentifier(connection);
+            }
+
+            return identifiers;
         }
     }
 }

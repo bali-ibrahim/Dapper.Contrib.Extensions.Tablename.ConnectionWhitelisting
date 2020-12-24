@@ -5,15 +5,17 @@
     <Authors>İbrahim Bali</Authors>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Description>Whitelist tablenames using information schema</Description>
-    <Version>1.0.2</Version>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
-    <PackageReleaseNotes>upgrade Connection.Identifier.Quoting to 1.0.2</PackageReleaseNotes>
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+    <PackageReleaseNotes>fix: stack overflow by recursively calling new delegate
+-update Dapper.Contrib.Extensions.Tablename to 1.1.1</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Connection.Identifier.Quoting" Version="1.0.2" />
     <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+    <PackageReference Include="Dapper.Contrib.Extensions.Tablename" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
