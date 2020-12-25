@@ -30,10 +30,9 @@ namespace Dapper.Contrib.Extensions.Tablename.ConnectionWhitelisting
                 {
                     tableName = preExistingDelegate(t);
                 }
-                tableName = tableName.QuoteIdentifier(connection);
                 if (whitelist != null)
                 {
-                    return whitelist.Contains(tableName) ? tableName : throw new Exception($"The tablename {tableName} is not whitelisted!");
+                    return whitelist.Contains(tableName.QuoteIdentifier(connection)) ? tableName : throw new Exception($"The tablename {tableName} is not whitelisted!");
                 }
                 else
                 {
